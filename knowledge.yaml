@@ -1,0 +1,501 @@
+kcp_version: "0.14"
+project: "gauge_group_merkabit"
+description: >
+  Paper 13 of the Merkabit series: "The Standard Model Gauge Group from PSL(2,7):
+  SU(3)×SU(2)×U(1) as Representation Theory of the Three-Stratum Decomposition of
+  GL(3,F_2)". Derives the full Standard Model gauge group from the 168-element group
+  PSL(2,7) = GL(3,F2) via three-stratum decomposition into B31 (binary sector, 31
+  elements), T75 (ternary sector, 75 elements), and Z62 (weak force stratum, 62
+  elements). Establishes SU(3), SU(2), and U(1) as representation theory of these
+  strata and recovers gauge boson mass ratios, electroweak mixing, and three-generation
+  structure from first principles.
+version: "1.0"
+created: "2026-04-06"
+maintainer: "Selina Stenberg"
+
+units:
+  - id: readme
+    path: README.md
+    intent: "Overview of Paper 13: PSL(2,7) three-stratum derivation of the Standard Model gauge group SU(3)×SU(2)×U(1)"
+    scope: global
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: eager
+      token_estimate: 400
+      priority: critical
+    triggers: [PSL(2,7), GL(3,F2), Standard Model, gauge group, SU(3), SU(2), U(1), three-stratum, B31, T75, Z62, Merkabit, Paper 13]
+
+  - id: psl27_core
+    path: psl27_core.py
+    intent: "Construct the 168-element group PSL(2,7) = GL(3,F2) and expose its basic group-theoretic structure"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: eager
+      token_estimate: 600
+      priority: critical
+    triggers: [PSL(2,7), GL(3,F2), 168-element group, group construction, gauge group, Standard Model, three-stratum, B31, T75, Z62, SU(3), SU(2), U(1)]
+
+  - id: psl27_representation_theory
+    path: psl27_representation_theory.py
+    intent: "Compute full representation theory of PSL(2,7): irreducible representations, characters, and decomposition identifying gauge algebra strata"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: eager
+      token_estimate: 700
+      priority: critical
+    triggers: [PSL(2,7), representation theory, irreducible representations, character table, SU(3), SU(2), U(1), gauge group, Standard Model, decomposition, branching rules]
+    depends_on: [psl27_core]
+
+  - id: b31_orbit_structure
+    path: b31_orbit_structure.py
+    intent: "Analyze the orbit structure of the B31 binary sector (31 elements) and its identification with the SU(3) color gauge algebra"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 550
+      priority: supplementary
+    triggers: [B31, binary sector, orbit structure, SU(3), color charge, strong force, gluons]
+    depends_on: [psl27_core]
+
+  - id: automorphism_t75
+    path: automorphism_t75.py
+    intent: "Compute the automorphism group of the T75 ternary sector (75 elements) and its relation to SU(2) weak isospin"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [T75, ternary sector, automorphism group, SU(2), weak isospin, weak force]
+    depends_on: [psl27_core]
+
+  - id: fano_core_36
+    path: fano_core_36.py
+    intent: "Construct the Fano plane core (36 elements) and establish its connection to matter field content"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [Fano plane, Fano core, matter fields, quarks, leptons, incidence geometry]
+    depends_on: [psl27_core]
+
+  - id: fano_flags_matter
+    path: fano_flags_matter.py
+    intent: "Map Fano flag variety to Standard Model matter fields, deriving quark and lepton quantum numbers"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 550
+      priority: supplementary
+    triggers: [Fano plane, flag variety, matter fields, quarks, leptons, fermions, hypercharge, gauge bosons]
+    depends_on: [fano_core_36, psl27_representation_theory]
+
+  - id: dim7_identification
+    path: dim7_identification.py
+    intent: "Identify the 7-dimensional gauge algebra structure within PSL(2,7) and its decomposition"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [7-dimensional, gauge algebra, PSL(2,7) irrep, Fano geometry, SU(3) SU(2) U(1)]
+    depends_on: [psl27_representation_theory]
+
+  - id: g2_orbit_correspondence
+    path: g2_orbit_correspondence.py
+    intent: "Establish G2 orbit correspondence in 7 dimensions as intermediate structure between PSL(2,7) and the Standard Model gauge group"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [G2, 7-dimensional, orbit correspondence, gauge algebra, octonions]
+    depends_on: [dim7_identification]
+
+  - id: gauge_boson_ratio
+    path: gauge_boson_ratio.py
+    intent: "Derive gauge boson mass ratios (W, Z, photon) from representation theory of PSL(2,7) strata"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [gauge boson, mass ratio, W boson, Z boson, Weinberg angle, electroweak mixing, Fano, matter fields]
+    depends_on: [psl27_representation_theory, threshold_ratios]
+
+  - id: generation_recheck
+    path: generation_recheck.py
+    intent: "Recheck and verify the three-generation structure of fermions from the orbit structure of PSL(2,7)"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 400
+      priority: reference
+    triggers: [three generations, fermion generations, S3, orbit structure, PSL(2,7)]
+    depends_on: [s3_universality, psl27_representation_theory]
+
+  - id: internal_orbit_thresholds
+    path: internal_orbit_thresholds.py
+    intent: "Compute internal orbit threshold distances within each stratum (B31, T75, Z62)"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 400
+      priority: supplementary
+    triggers: [orbit thresholds, threshold distances, spectral gaps, B31, T75, Z62, strata]
+    depends_on: [b31_orbit_structure, automorphism_t75]
+
+  - id: interstratum_commutator
+    path: interstratum_commutator.py
+    intent: "Compute commutators between elements of different strata (B31, T75, Z62) to verify gauge algebra structure"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [commutator, interstratum, gauge algebra, B31, T75, Z62, Lie algebra]
+    depends_on: [b31_orbit_structure, automorphism_t75, z62_missing_elements]
+
+  - id: lie_algebra_matter
+    path: lie_algebra_matter.py
+    intent: "Derive the Lie algebra of matter content from PSL(2,7) stratum structure"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [Lie algebra, matter content, root system, Standard Model matter, quarks, leptons, PSL(2,7)]
+    depends_on: [psl27_representation_theory, fano_flags_matter]
+
+  - id: matter_root_structure
+    path: matter_root_structure.py
+    intent: "Derive the root system of matter fields from Fano plane geometry"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [root system, Fano geometry, matter fields, Dynkin diagram, root vectors]
+    depends_on: [fano_core_36, lie_algebra_matter]
+
+  - id: neutral_current
+    path: neutral_current.py
+    intent: "Derive neutral current couplings from representation theory of PSL(2,7) strata"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [neutral current, Z boson, coupling constants, weak mixing angle, electroweak]
+    depends_on: [psl27_representation_theory, threshold_ratios]
+
+  - id: order4_bridge
+    path: order4_bridge.py
+    intent: "Show that order-4 elements of PSL(2,7) bridge the three strata and mediate gauge interactions"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 400
+      priority: supplementary
+    triggers: [order-4 elements, bridge, strata, gauge interactions, B31, T75, Z62]
+    depends_on: [psl27_core, interstratum_commutator]
+
+  - id: resolve_inconsistency
+    path: resolve_inconsistency.py
+    intent: "Resolve apparent inconsistency in stratum element assignment and verify partition is exact"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 350
+      priority: reference
+    triggers: [inconsistency, stratum assignment, partition, element counting, B31, T75, Z62]
+    depends_on: [psl27_core, b31_orbit_structure, automorphism_t75, z62_missing_elements]
+
+  - id: s3_universality
+    path: s3_universality.py
+    intent: "Prove S3 universality: the three-stratum structure of PSL(2,7) universally implies exactly three fermion generations"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 500
+      priority: supplementary
+    triggers: [S3, three generations, universality, fermion generations, three-stratum, PSL(2,7)]
+    depends_on: [psl27_core, b31_orbit_structure]
+
+  - id: spectral_gaps
+    path: spectral_gaps.py
+    intent: "Compute spectral gaps of the three strata (B31, T75, Z62) and relate them to gauge coupling hierarchies"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [spectral gaps, strata, gauge coupling, coupling hierarchy, B31, T75, Z62]
+    depends_on: [b31_orbit_structure, automorphism_t75, z62_missing_elements]
+
+  - id: stratum_threshold_distances
+    path: stratum_threshold_distances.py
+    intent: "Compute threshold distances between the three strata B31, T75, Z62 in the PSL(2,7) group metric"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 400
+      priority: supplementary
+    triggers: [threshold distances, strata, B31, T75, Z62, group metric, mass scales]
+    depends_on: [internal_orbit_thresholds]
+
+  - id: threshold_ratios
+    path: threshold_ratios.py
+    intent: "Derive electroweak mixing angle and coupling ratios from threshold distances between strata"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [threshold ratios, electroweak mixing, Weinberg angle, sin²θ_W, coupling ratios, B31, T75, Z62]
+    depends_on: [stratum_threshold_distances]
+
+  - id: z4_structure_proof
+    path: z4_structure_proof.py
+    intent: "Prove that Z62 has Z4 substructure, identifying it as the weak force stratum with SU(2)×U(1) content"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 450
+      priority: supplementary
+    triggers: [Z4, Z62, weak force, SU(2), U(1), hypercharge, weak isospin, structure proof]
+    depends_on: [psl27_core, automorphism_t75]
+
+  - id: z62_missing_elements
+    path: z62_missing_elements.py
+    intent: "Identify the Z62 elements not present in the binary sector and establish their physical role"
+    scope: module
+    audience: [human]
+    validated: "2026-04-06"
+    hints:
+      load_strategy: lazy
+      token_estimate: 400
+      priority: supplementary
+    triggers: [Z62, missing elements, binary sector, B31, weak force, hypercharge, stratum]
+    depends_on: [psl27_core, b31_orbit_structure]
+
+relationships:
+  - from: psl27_core
+    to: readme
+    type: supports
+    note: "Core group construction underlies all results summarized in README"
+
+  - from: psl27_representation_theory
+    to: psl27_core
+    type: extends
+    note: "Representation theory is built on top of the core group construction"
+
+  - from: b31_orbit_structure
+    to: psl27_core
+    type: extends
+    note: "B31 orbit analysis specializes the core PSL(2,7) group to the SU(3) stratum"
+
+  - from: automorphism_t75
+    to: psl27_core
+    type: extends
+    note: "T75 automorphism analysis specializes PSL(2,7) to the SU(2) stratum"
+
+  - from: z62_missing_elements
+    to: psl27_core
+    type: extends
+    note: "Z62 identification completes the three-stratum partition of PSL(2,7)"
+
+  - from: fano_core_36
+    to: psl27_core
+    type: related
+    note: "Fano core is embedded in PSL(2,7) as the geometric substructure underlying matter"
+
+  - from: fano_flags_matter
+    to: fano_core_36
+    type: extends
+    note: "Flag variety construction extends Fano core to full matter field content"
+
+  - from: fano_flags_matter
+    to: psl27_representation_theory
+    type: depends_on
+    note: "Matter field identification uses representation-theoretic branching rules"
+
+  - from: dim7_identification
+    to: psl27_representation_theory
+    type: extends
+    note: "7D identification uses the 7-dimensional irrep of PSL(2,7)"
+
+  - from: g2_orbit_correspondence
+    to: dim7_identification
+    type: extends
+    note: "G2 correspondence is derived from the 7D structure"
+
+  - from: interstratum_commutator
+    to: b31_orbit_structure
+    type: extends
+    note: "Cross-stratum commutators build on B31 orbit structure"
+
+  - from: interstratum_commutator
+    to: automorphism_t75
+    type: extends
+    note: "Cross-stratum commutators build on T75 automorphism structure"
+
+  - from: interstratum_commutator
+    to: z62_missing_elements
+    type: extends
+    note: "Cross-stratum commutators complete with Z62 element identification"
+
+  - from: lie_algebra_matter
+    to: psl27_representation_theory
+    type: extends
+    note: "Lie algebra of matter is derived from PSL(2,7) representation theory"
+
+  - from: lie_algebra_matter
+    to: fano_flags_matter
+    type: supports
+    note: "Fano flag variety provides the geometric realization of the matter Lie algebra"
+
+  - from: matter_root_structure
+    to: fano_core_36
+    type: extends
+    note: "Root system derives from Fano incidence geometry"
+
+  - from: matter_root_structure
+    to: lie_algebra_matter
+    type: precedes
+    note: "Root structure underlies the full Lie algebra of matter"
+
+  - from: internal_orbit_thresholds
+    to: b31_orbit_structure
+    type: extends
+    note: "Internal thresholds specialize orbit analysis to threshold distances"
+
+  - from: stratum_threshold_distances
+    to: internal_orbit_thresholds
+    type: extends
+    note: "Inter-stratum distances build on internal threshold computations"
+
+  - from: threshold_ratios
+    to: stratum_threshold_distances
+    type: extends
+    note: "Coupling and mixing angle ratios are derived from threshold distances"
+
+  - from: gauge_boson_ratio
+    to: psl27_representation_theory
+    type: extends
+    note: "Gauge boson mass ratios use representation dimensions"
+
+  - from: gauge_boson_ratio
+    to: threshold_ratios
+    type: depends_on
+    note: "Mass ratio computation uses electroweak mixing from threshold ratios"
+
+  - from: neutral_current
+    to: psl27_representation_theory
+    type: extends
+    note: "Neutral current couplings use representation-theoretic quantum numbers"
+
+  - from: neutral_current
+    to: threshold_ratios
+    type: depends_on
+    note: "Weak mixing angle from threshold ratios feeds into neutral current computation"
+
+  - from: spectral_gaps
+    to: b31_orbit_structure
+    type: related
+    note: "Spectral gaps of strata relate to their orbit and adjacency structure"
+
+  - from: order4_bridge
+    to: psl27_core
+    type: extends
+    note: "Order-4 element analysis is a specialized view of PSL(2,7) element orders"
+
+  - from: order4_bridge
+    to: interstratum_commutator
+    type: supports
+    note: "Order-4 bridges explain the commutator structure between strata"
+
+  - from: z4_structure_proof
+    to: psl27_core
+    type: extends
+    note: "Z4 proof uses PSL(2,7) subgroup structure"
+
+  - from: z4_structure_proof
+    to: automorphism_t75
+    type: related
+    note: "Z4 in Z62 complements T75 automorphism structure for the weak sector"
+
+  - from: s3_universality
+    to: psl27_core
+    type: extends
+    note: "S3 universality argument derives from PSL(2,7) three-stratum structure"
+
+  - from: s3_universality
+    to: b31_orbit_structure
+    type: depends_on
+    note: "Generation count uses B31 orbit structure as primary evidence"
+
+  - from: generation_recheck
+    to: s3_universality
+    type: supports
+    note: "Recheck verifies the generation count claimed in S3 universality"
+
+  - from: generation_recheck
+    to: psl27_representation_theory
+    type: depends_on
+    note: "Recheck uses full representation theory for verification"
+
+  - from: resolve_inconsistency
+    to: psl27_core
+    type: supports
+    note: "Inconsistency resolution validates the core partition"
+
+  - from: resolve_inconsistency
+    to: z62_missing_elements
+    type: supports
+    note: "Z62 missing element identification is one source of apparent inconsistency"
